@@ -1,26 +1,16 @@
-/**
- * TypeDoc configuration for generating Sanity SDK documentation
- * @packageDocumentation
- */
 {
   "$schema": "https://typedoc.org/schema.json",
-  /**
-   * Display name for the generated documentation
-   */
   "name": "Sanity Documentation",
-  /**
-   * Source files to include in documentation generation
-   * Includes core SDK exports and React hooks/context
-   */
   "entryPoints": ["input-docs/**/*.json"],
   "entryPointStrategy": "merge",
   "alwaysCreateEntryPointModule": false,
-  "customCss": "theme/style.css",
+  "sortEntryPoints": false,
   "includeVersion": false,
+  "router": "structure-dir",
+  "customCss": "theme/style.css",
   "navigation": {
     "includeCategories": true,
     "includeFolders": false
   },
-  "categorizeByGroup": false,
-  "sortEntryPoints": false
+  "categorizeByGroup": false
 }
