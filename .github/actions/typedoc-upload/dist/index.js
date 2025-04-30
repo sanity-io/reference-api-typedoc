@@ -58,7 +58,7 @@ async function run() {
         semver: version,
         typedocJson: {
             _type: 'code',
-            code: JSON.parse(typedocJson),
+            code: JSON.stringify(typedocJson),
         },
     };
     console.log(JSON.stringify(document, null, 2));
