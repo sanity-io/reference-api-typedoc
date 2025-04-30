@@ -45,12 +45,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(9999));
 const promises_1 = __importDefault(__nccwpck_require__(1943));
+const path_1 = __importDefault(__nccwpck_require__(6928));
 async function run() {
     const packageName = core.getInput('packageName');
     const version = core.getInput('version');
     const typedocJsonPath = core.getInput('typedocJsonPath');
     console.log(`Uploading Typedoc JSON for ${packageName} v${version}`);
     console.log(typedocJsonPath);
+    console.log(__dirname, path_1.default.join(__dirname, typedocJsonPath));
     const typedocJson = await promises_1.default.readFile(typedocJsonPath, 'utf-8');
     console.log(typedocJson);
 }

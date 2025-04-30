@@ -1,0 +1,5 @@
+# Run the build action
+pnpm build:action
+
+# Add the generated files to the commit
+git add .github/actions/typedoc-upload/dist/
