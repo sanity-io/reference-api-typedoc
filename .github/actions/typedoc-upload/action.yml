@@ -4,7 +4,7 @@ description: "Uploads Typedoc JSON documentation to the reference API"
 inputs:
   packageName:
     required: true
-    description: "The name of the package to upload the Typedoc JSON for"
+    description: "The name of the package to upload. This needs to match the platform in Admin Studio"
   version:
     required: true
     description: "The version of the package to upload the Typedoc JSON for"
