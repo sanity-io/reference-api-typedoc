@@ -8,6 +8,7 @@
   "includeVersion": false,
   "router": "structure-dir",
   "customCss": "theme/style.css",
+  "hideGenerator": true,
   "navigation": {
     "includeCategories": true,
     "includeFolders": false
