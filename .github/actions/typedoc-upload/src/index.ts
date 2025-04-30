@@ -21,7 +21,7 @@ async function run() {
 
   const typedocJson = await fs.readFile(typedocJsonPath, 'utf-8')
 
-  const query = groq`*[_type == "platform" && title matches $title][0]`
+  const query = groq`*[_type == "apiPlatform" && title match $title][0]`
 
   const platform = await client.fetch(query, {title: packageName})
 

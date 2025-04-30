@@ -61,7 +61,7 @@ async function run() {
     const typedocJsonPath = core.getInput('typedocJsonPath');
     core.info(`[Uploading] Typedoc JSON for ${packageName} v${version}`);
     const typedocJson = await promises_1.default.readFile(typedocJsonPath, 'utf-8');
-    const query = (0, groq_1.default) `*[_type == "platform" && title matches $title][0]`;
+    const query = (0, groq_1.default) `*[_type == "apiPlatform" && title match $title][0]`;
     const platform = await client.fetch(query, { title: packageName });
     if (!platform) {
         core.setFailed(`Platform ${packageName} not found. Check the platform name in Admin Studio`);
