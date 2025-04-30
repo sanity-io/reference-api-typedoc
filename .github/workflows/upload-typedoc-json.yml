@@ -1,0 +1,31 @@
+name: Upload Typedoc JSON
+
+on:
+  workflow_call:
+    inputs:
+      packageName:
+        required: true
+        type: string
+        description: "The name of the package to upload the Typedoc JSON for"
+      version:
+        required: true
+        type: string
+        description: "The version of the package to upload the Typedoc JSON for"
+      typedocJson:
+        required: true
+        type: string
+        description: "The Typedoc JSON to upload"
+
+jobs:
+  upload-typedoc-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload Typedoc JSON
+        uses: ./.github/actions/typedoc-upload@main
+        with:
+          packageName: ${{ inputs.packageName }}
+          version: ${{ inputs.version }}
+          typedocJson: ${{ inputs.typedocJson }}

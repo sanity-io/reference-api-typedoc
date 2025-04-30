@@ -1,0 +1,15 @@
+name: "Upload Typedoc JSON"
+description: "Upload Typedoc JSON to a Admin studio"
+inputs:
+  packageName:
+    required: true
+    description: "The name of the package to upload the Typedoc JSON for"
+  version:
+    required: true
+    description: "The version of the package to upload the Typedoc JSON for"
+  typedocJson:
+    required: true
+    description: "The Typedoc JSON to upload"
+runs:
+  using: "node20"
+  main: "dist/index.js"
