@@ -7,10 +7,10 @@ async function run() {
   const version = core.getInput('version')
   const typedocJsonPath = core.getInput('typedocJsonPath')
 
-  console.log(`Uploading Typedoc JSON for ${packageName} v${version}`)
+  console.log(`[Uploading] Typedoc JSON for ${packageName} v${version}`)
   console.log('Path', typedocJsonPath)
 
-  console.log('All Paths', __dirname, path.join(__dirname, typedocJsonPath))
+  console.log('All Paths', __dirname)
   // const typedocJson = await fs.readFile(typedocJsonPath, 'utf-8')
   // console.log(typedocJson)
 }

@@ -39,19 +39,15 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(9999));
-const path_1 = __importDefault(__nccwpck_require__(6928));
 async function run() {
     const packageName = core.getInput('packageName');
     const version = core.getInput('version');
     const typedocJsonPath = core.getInput('typedocJsonPath');
-    console.log(`Uploading Typedoc JSON for ${packageName} v${version}`);
+    console.log(`[Uploading] Typedoc JSON for ${packageName} v${version}`);
     console.log('Path', typedocJsonPath);
-    console.log('All Paths', __dirname, path_1.default.join(__dirname, typedocJsonPath));
+    console.log('All Paths', __dirname);
     // const typedocJson = await fs.readFile(typedocJsonPath, 'utf-8')
     // console.log(typedocJson)
 }
