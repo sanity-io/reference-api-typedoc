@@ -39,13 +39,19 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(9999));
+const promises_1 = __importDefault(__nccwpck_require__(1943));
 async function run() {
-    const packageName = core.getInput("packageName");
-    const version = core.getInput("version");
-    const typedocJson = core.getInput("typedocJson");
+    const packageName = core.getInput('packageName');
+    const version = core.getInput('version');
+    const typedocJsonPath = core.getInput('typedocJsonPath');
     console.log(`Uploading Typedoc JSON for ${packageName} v${version}`);
+    console.log(typedocJsonPath);
+    const typedocJson = await promises_1.default.readFile(typedocJsonPath, 'utf-8');
     console.log(typedocJson);
 }
 run();
@@ -25764,6 +25770,14 @@ module.exports = require("events");
 
 "use strict";
 module.exports = require("fs");
+
+/***/ }),
+
+/***/ 1943:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("fs/promises");
 
 /***/ }),
 
