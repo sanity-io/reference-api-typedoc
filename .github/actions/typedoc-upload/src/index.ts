@@ -41,7 +41,8 @@ async function run() {
     semver: version,
     typedocJson: {
       _type: 'code',
-      code: JSON.stringify(typedocJson),
+      // fs readFile will already read it as a string
+      code: typedocJson,
     },
   }
 
