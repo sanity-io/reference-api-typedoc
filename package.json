@@ -2,16 +2,22 @@
   "name": "reference-api-typedoc",
   "version": "0.0.0",
   "private": true,
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:docs": "typedoc"
+    "build:action": "cd .github/actions/typedoc-upload && npm run build",
+    "build:docs": "typedoc",
+    "format": "prettier --write .",
+    "prepare": "husky",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "prettier": "@sanity/prettier-config",
   "devDependencies": {
+    "@sanity/prettier-config": "^1.0.3",
+    "husky": "^9.1.7",
     "typedoc": "^0.28.3"
   }
 }

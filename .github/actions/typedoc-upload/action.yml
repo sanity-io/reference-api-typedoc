@@ -1,15 +1,17 @@
 name: "Upload Typedoc JSON"
-description: "Upload Typedoc JSON to a Admin studio"
+description: "Uploads the Typedoc JSON specification to the type reference documentation site"
+
 inputs:
   packageName:
     required: true
-    description: "The name of the package to upload the Typedoc JSON for"
+    description: "The npm package name. This needs to match the platform document in the  Admin Studio"
   version:
     required: true
     description: "The version of the package to upload the Typedoc JSON for"
-  typedocJson:
+  typedocJsonPath:
     required: true
-    description: "The Typedoc JSON to upload"
+    description: "The path to the generated Typedoc JSON file to upload. Usually the same value as the --json flag in your typedoc generation."
+
 runs:
   using: "node20"
   main: "dist/index.js"

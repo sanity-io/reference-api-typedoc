@@ -10,7 +10,7 @@
       "matchDepTypes": ["devDependencies"],
       "matchUpdateTypes": ["patch", "minor"],
       "groupName": "devDependencies (non-major)",
-      "group": { "semanticCommitType": "chore" },
+      "group": {"semanticCommitType": "chore"},
       "semanticCommitType": "chore"
     },
     {
