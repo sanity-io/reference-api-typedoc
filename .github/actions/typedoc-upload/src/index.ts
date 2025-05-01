@@ -21,12 +21,12 @@ async function run() {
 
   const typedocJson = await fs.readFile(typedocJsonPath, 'utf-8')
 
-  const query = groq`*[_type == "apiPlatform" && title match $title][0]`
+  const query = groq`*[_type == "apiPlatform" && npmName == $name][0]`
 
-  const platform = await client.fetch(query, {title: packageName})
+  const platform = await client.fetch(query, {name: packageName})
 
   if (!platform) {
-    core.setFailed(`Platform ${packageName} not found. Check the platform name in Admin Studio`)
+    core.setFailed(`Platform ${packageName} not found. Make sure you have a corresponding "API and platform" document in the Admin Studio: https://admin.sanity.io/structure/docs;changelog;apiPlatform`)
     return
   }
 
