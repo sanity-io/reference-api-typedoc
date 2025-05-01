@@ -61,10 +61,10 @@ async function run() {
     const typedocJsonPath = core.getInput('typedocJsonPath');
     core.info(`[Uploading] Typedoc JSON for ${packageName} v${version}`);
     const typedocJson = await promises_1.default.readFile(typedocJsonPath, 'utf-8');
-    const query = (0, groq_1.default) `*[_type == "apiPlatform" && title match $title][0]`;
-    const platform = await client.fetch(query, { title: packageName });
+    const query = (0, groq_1.default) `*[_type == "apiPlatform" && npmName == $name][0]`;
+    const platform = await client.fetch(query, { name: packageName });
     if (!platform) {
-        core.setFailed(`Platform ${packageName} not found. Check the platform name in Admin Studio`);
+        core.setFailed(`Platform ${packageName} not found. Make sure you have a corresponding "API and platform" document in the Admin Studio: https://admin.sanity.io/structure/docs;changelog;apiPlatform`);
         return;
     }
     const document = {
