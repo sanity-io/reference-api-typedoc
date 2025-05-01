@@ -50,7 +50,7 @@ const client_1 = __nccwpck_require__(1483);
 const node_crypto_1 = __nccwpck_require__(7598);
 const client = (0, client_1.createClient)({
     projectId: '3do82whm',
-    dataset: 'staging',
+    dataset: 'next',
     apiVersion: '2025-04-30',
     useCdn: false,
     token: process.env.SANITY_DOCS_API_TOKEN,
