@@ -1,2 +1,6 @@
 node_modules
 docs/
+.env
+input-docs/
+.DS_Store
+dist/
