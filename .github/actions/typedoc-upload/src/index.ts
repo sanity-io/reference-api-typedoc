@@ -6,7 +6,7 @@ import {randomUUID} from 'node:crypto'
 
 const client = createClient({
   projectId: '3do82whm',
-  dataset: 'staging',
+  dataset: 'next',
   apiVersion: '2025-04-30',
   useCdn: false,
   token: process.env.SANITY_DOCS_API_TOKEN,
