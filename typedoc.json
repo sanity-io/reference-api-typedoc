@@ -13,5 +13,19 @@
     "includeCategories": true,
     "includeFolders": false
   },
-  "categorizeByGroup": false
+  "categorizeByGroup": false,
+  "highlightLanguages": [
+    "diff",
+    "bash",
+    "console",
+    "css",
+    "html",
+    "javascript",
+    "json",
+    "jsonc",
+    "json5",
+    "tsx",
+    "typescript"
+  ],
+  "ignoredHighlightLanguages": ["groq"]
 }
