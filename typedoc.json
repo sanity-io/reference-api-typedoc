@@ -8,6 +8,7 @@
   "includeVersion": false,
   "router": "structure-dir",
   "customCss": "theme/style.css",
+  "customFooterHtml": "<a href=\"https://www.sanity.io?ref=reference-docs-site\">Sanity Content Operating System</a><!-- Fathom - beautiful, simple website analytics --> <script src=\"https://cdn.usefathom.com/script.js\" data-site=\"XRTTNUXT\" defer></script> <!-- / Fathom -->",
   "hideGenerator": true,
   "navigation": {
     "includeCategories": true,
