@@ -4,3 +4,4 @@ docs/
 input-docs/
 .DS_Store
 dist/
+.vercel
