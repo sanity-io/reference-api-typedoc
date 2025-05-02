@@ -8,6 +8,7 @@ const client = createClient({
   projectId: process.env.SANITY_PROJECT_ID,
   dataset: process.env.SANITY_DATASET,
   apiVersion: "2021-03-25",
+  useCdn: false
 });
 
 const query = `*[_type == 'typesReference'] {
