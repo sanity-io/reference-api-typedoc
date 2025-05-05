@@ -1,6 +1,6 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "name": "The Sanity Type Reference Documentation",
+  "name": "The Sanity Types Reference Documentation",
   "entryPoints": ["input-docs/**/*.json"],
   "entryPointStrategy": "merge",
   "alwaysCreateEntryPointModule": false,
