@@ -1,2 +1,6 @@
 ignoredBuiltDependencies:
   - esbuild
+
+packages:
+  - '.'
+  - '.github/actions/typedoc-upload'

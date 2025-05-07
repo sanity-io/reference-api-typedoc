@@ -1,8 +1,8 @@
-exports.id = 630;
-exports.ids = [630];
+exports.id = 144;
+exports.ids = [144];
 exports.modules = {
 
-/***/ 4165:
+/***/ 7939:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var parse = (__webpack_require__(7016).parse)
@@ -504,14 +504,14 @@ function removeUnsafeHeaders (headers) {
 
 /***/ }),
 
-/***/ 4630:
+/***/ 1144:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__(4165)
+module.exports = __webpack_require__(7939)
 
 
 /***/ })
 
 };
 ;
-//# sourceMappingURL=630.index.js.map
+//# sourceMappingURL=144.index.js.map
