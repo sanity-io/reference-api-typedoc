@@ -27,7 +27,8 @@
     "jsonc",
     "json5",
     "tsx",
-    "typescript"
+    "typescript",
+    "markdown"
   ],
   "ignoredHighlightLanguages": ["groq"]
 }
