@@ -7,16 +7,22 @@ import {createClient} from '@sanity/client'
 const client = createClient({
   projectId: process.env.SANITY_PROJECT_ID,
   dataset: process.env.SANITY_DATASET,
-  apiVersion: '2021-03-25',
+  apiVersion: '2025-05-29',
   useCdn: false,
+  perspective: 'published',
 })
 
-const query = `*[_type == 'typesReference'] {
-  ...,
-  "latestVersion": latestVersion->semver,
-  "typeDocJson": latestVersion->typedocJson.code,
-  "npmName": library->npmName
-}`
+const query = `//groq
+  *[_type == "typesReference"]{
+    "latestVersion": latestVersion->semver,
+    "typeDocJson": coalesce(
+      latestVersion->typedocJson.code,
+      // If the latest version is not found, get the latest apiVersion for the library to prevent accidental removal of the library
+      *[_type == "apiVersion" && platform._ref == ^.library->_id && typedocJson != null]|order(semver desc)[0].typedocJson.code
+    ),
+    "npmName": library->npmName
+  }
+`
 
 const data = await client.fetch(query)
 
