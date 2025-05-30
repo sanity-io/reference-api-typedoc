@@ -27,6 +27,10 @@ await fs.rm('input-docs', {recursive: true, force: true})
 await fs.mkdir('input-docs')
 
 for (const item of data) {
+  if (!item.typeDocJson) {
+    continue
+  }
+
   const dirname = item.npmName.replace(/\//g, '-')
 
   // Make a directory
