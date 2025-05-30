@@ -29,6 +29,7 @@ To add your library to this reference documentation site:
 ```bash
 npm install --save-dev typedoc
 ```
+
 2. Add a documentation build script to your package.json:
 
 ```json
@@ -38,9 +39,12 @@ npm install --save-dev typedoc
 > [!WARNING]
 > You might have to add `--tsconfig /path/to/tsconfig.json` for monorepo projects.
 
-3. Add the upload GitHub Action to your workflow:
+3. [Create a new library document in the admin studio](https://admin.sanity.io/intent/create/template=apiPlatform;type=apiPlatform/), add metadata to it, and publish.
+
+4. Add the upload GitHub Action to your workflow. Remember to edit the packageName value and "Build docs" command if you have used something else.
 
 ```yaml
+# .github/actions/upload-docs.yml
 name: Upload Docs
 
 on:
@@ -77,14 +81,16 @@ jobs:
       - name: Upload Docs
         uses: sanity-io/reference-api-typedoc/.github/actions/typedoc-upload@latest
         with:
-          packageName: "Your npm package name" # for example: @sanity/client
+          packageName: 'Your npm package name' # for example: @sanity/client
           version: "${{ github.event.release.tag_name || '0.0.0' }}" # make sure it's the "next" and not current version being published
-          typedocJsonPath: "docs/typedoc.json"
+          typedocJsonPath: 'docs/typedoc.json'
         env:
           SANITY_DOCS_API_TOKEN: ${{ secrets.SANITY_DOCS_API_TOKEN }} # this will be available org wide
 ```
 
 4. Ensure your code is properly documented using TS/JSDoc comments
+
+5. Merge a PR to `main` or push a new release.
 
 ## Documentation Best Practices
 
