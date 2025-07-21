@@ -89,11 +89,23 @@ pre {
   border-radius: 8px;
   border: 1px solid light-dark(var(--gray200), var(--gray800));
   padding: 1.5rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.0675);
 }
 
 @media (min-width: 770px) {
+  /* Unset Typedoc theme max height */
+  .col-sidebar {
+    max-height: none;
+  }
   .col-content {
     padding: 3vw;
+  }
+}
+
+@media (min-width: 1200px) {
+  /* Unset Typedoc theme max height */
+  .site-menu {
+    max-height: none;
   }
 }
 
