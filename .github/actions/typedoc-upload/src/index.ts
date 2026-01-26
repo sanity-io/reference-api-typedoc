@@ -19,7 +19,12 @@ async function run() {
 
   core.info(`[Uploading] Typedoc JSON for ${packageName} v${version}`)
 
-  const typedocJson = await fs.readFile(typedocJsonPath, 'utf-8')
+  // Upload the file as an asset
+  const fileStream = await fs.readFile(typedocJsonPath)
+  const uploadedAsset = await client.assets.upload('file', fileStream, {
+    filename: `${packageName}-v${version}-typedoc.json`,
+    contentType: 'application/json',
+  })
 
   const query = groq`*[_type == "apiPlatform" && npmName == $name][0]`
 
@@ -39,10 +44,12 @@ async function run() {
       _ref: platform._id,
     },
     semver: version,
-    typedocJson: {
-      _type: 'code',
-      // fs readFile will already read it as a string
-      code: typedocJson,
+    attachment: {
+      _type: 'file',
+      asset: {
+        _type: 'reference',
+        _ref: uploadedAsset._id,
+      },
     },
   }
 

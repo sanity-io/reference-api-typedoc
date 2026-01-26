@@ -60,7 +60,12 @@ async function run() {
     const version = core.getInput('version');
     const typedocJsonPath = core.getInput('typedocJsonPath');
     core.info(`[Uploading] Typedoc JSON for ${packageName} v${version}`);
-    const typedocJson = await promises_1.default.readFile(typedocJsonPath, 'utf-8');
+    // Upload the file as an asset
+    const fileStream = await promises_1.default.readFile(typedocJsonPath);
+    const uploadedAsset = await client.assets.upload('file', fileStream, {
+        filename: `${packageName}-v${version}-typedoc.json`,
+        contentType: 'application/json',
+    });
     const query = (0, groq_1.default) `*[_type == "apiPlatform" && npmName == $name][0]`;
     const platform = await client.fetch(query, { name: packageName });
     if (!platform) {
@@ -76,10 +81,12 @@ async function run() {
             _ref: platform._id,
         },
         semver: version,
-        typedocJson: {
-            _type: 'code',
-            // fs readFile will already read it as a string
-            code: typedocJson,
+        attachment: {
+            _type: 'file',
+            asset: {
+                _type: 'reference',
+                _ref: uploadedAsset._id,
+            },
         },
     };
     const res = await client.createIfNotExists(document);
