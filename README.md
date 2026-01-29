@@ -103,6 +103,14 @@ For optimal API reference documentation, include the following for all public AP
 - Practical examples
 - When possible, include `@throws`, `@remarks`, and `@see/@link` references
 
+## Testing unpublished libraries locally
+
+After configuring typedoc in a new library, you can test the output against the reference site without publishing to Sanity.
+
+- To test with unpublished libraries, copy their output file (JSON) to the `input-docs` directory.
+- Run `npx typedoc` to build the site with any libraries in `input-docs`.
+- Run `npx http-server docs/` to run the local build.
+
 ## Contributing
 
 Contributions to improve this reference documentation system are welcome. Please see our [contributing guidelines](CONTRIBUTING.md) for more information.
