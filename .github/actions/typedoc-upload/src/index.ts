@@ -2,7 +2,6 @@ import * as core from '@actions/core'
 import fs from 'fs/promises'
 import groq from 'groq'
 import {createClient} from '@sanity/client'
-import {randomUUID} from 'node:crypto'
 
 const client = createClient({
   projectId: '3do82whm',
@@ -35,25 +34,37 @@ async function run() {
     return
   }
 
-  const document = {
-    _id: `drafts.${randomUUID()}`,
-    _type: 'apiVersion',
-    date: new Date().toISOString().split('T')[0],
-    platform: {
-      _type: 'reference',
-      _ref: platform._id,
-    },
+  const existingVersionQuery = groq`*[_type == "apiVersion" && platform._ref == $platformId && semver == $semver][0]`
+  const existingVersion = await client.fetch(existingVersionQuery, {
+    platformId: platform._id,
     semver: version,
-    attachment: {
-      _type: 'file',
-      asset: {
-        _type: 'reference',
-        _ref: uploadedAsset._id,
-      },
+  })
+
+  const attachment = {
+    _type: 'file',
+    asset: {
+      _type: 'reference',
+      _ref: uploadedAsset._id,
     },
   }
 
-  const res = await client.createIfNotExists(document)
+  let res
+  if (existingVersion) {
+    core.info(`[Patching] Existing apiVersion document ${existingVersion._id}`)
+    res = await client.patch(existingVersion._id).set({attachment}).commit()
+  } else {
+    core.info(`[Creating] New apiVersion document for ${packageName} v${version}`)
+    res = await client.create({
+      _type: 'apiVersion',
+      date: new Date().toISOString().split('T')[0],
+      platform: {
+        _type: 'reference',
+        _ref: platform._id,
+      },
+      semver: version,
+      attachment,
+    })
+  }
 
   core.info(`[Uploaded] Typedoc JSON for ${packageName} v${version}`)
 

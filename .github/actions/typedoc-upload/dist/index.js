@@ -47,7 +47,6 @@ const core = __importStar(__nccwpck_require__(8185));
 const promises_1 = __importDefault(__nccwpck_require__(1943));
 const groq_1 = __importDefault(__nccwpck_require__(2057));
 const client_1 = __nccwpck_require__(6171);
-const node_crypto_1 = __nccwpck_require__(7598);
 const client = (0, client_1.createClient)({
     projectId: '3do82whm',
     dataset: 'next',
@@ -72,24 +71,36 @@ async function run() {
         core.setFailed(`Platform ${packageName} not found. Make sure you have a corresponding "API and platform" document in the Admin Studio: https://admin.sanity.io/structure/docs;changelog;apiPlatform`);
         return;
     }
-    const document = {
-        _id: `drafts.${(0, node_crypto_1.randomUUID)()}`,
-        _type: 'apiVersion',
-        date: new Date().toISOString().split('T')[0],
-        platform: {
-            _type: 'reference',
-            _ref: platform._id,
-        },
+    const existingVersionQuery = (0, groq_1.default) `*[_type == "apiVersion" && platform._ref == $platformId && semver == $semver][0]`;
+    const existingVersion = await client.fetch(existingVersionQuery, {
+        platformId: platform._id,
         semver: version,
-        attachment: {
-            _type: 'file',
-            asset: {
-                _type: 'reference',
-                _ref: uploadedAsset._id,
-            },
+    });
+    const attachment = {
+        _type: 'file',
+        asset: {
+            _type: 'reference',
+            _ref: uploadedAsset._id,
         },
     };
-    const res = await client.createIfNotExists(document);
+    let res;
+    if (existingVersion) {
+        core.info(`[Patching] Existing apiVersion document ${existingVersion._id}`);
+        res = await client.patch(existingVersion._id).set({ attachment }).commit();
+    }
+    else {
+        core.info(`[Creating] New apiVersion document for ${packageName} v${version}`);
+        res = await client.create({
+            _type: 'apiVersion',
+            date: new Date().toISOString().split('T')[0],
+            platform: {
+                _type: 'reference',
+                _ref: platform._id,
+            },
+            semver: version,
+            attachment,
+        });
+    }
     core.info(`[Uploaded] Typedoc JSON for ${packageName} v${version}`);
     console.log(JSON.stringify(res, null, 2));
 }
