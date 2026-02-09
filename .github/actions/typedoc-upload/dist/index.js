@@ -53,6 +53,7 @@ const client = (0, client_1.createClient)({
     apiVersion: '2025-04-30',
     useCdn: false,
     token: process.env.SANITY_DOCS_API_TOKEN,
+    perspective: 'raw',
 });
 async function run() {
     const packageName = core.getInput('packageName');
@@ -71,8 +72,8 @@ async function run() {
         core.setFailed(`Platform ${packageName} not found. Make sure you have a corresponding "API and platform" document in the Admin Studio: https://admin.sanity.io/structure/docs;changelog;apiPlatform`);
         return;
     }
-    const existingVersionQuery = (0, groq_1.default) `*[_type == "apiVersion" && platform._ref == $platformId && semver == $semver][0]`;
-    const existingVersion = await client.fetch(existingVersionQuery, {
+    const existingVersionsQuery = (0, groq_1.default) `*[_type == "apiVersion" && platform._ref == $platformId && semver == $semver]{ _id }`;
+    const existingVersions = await client.fetch(existingVersionsQuery, {
         platformId: platform._id,
         semver: version,
     });
@@ -84,9 +85,14 @@ async function run() {
         },
     };
     let res;
-    if (existingVersion) {
-        core.info(`[Patching] Existing apiVersion document ${existingVersion._id}`);
-        res = await client.patch(existingVersion._id).set({ attachment }).commit();
+    if (existingVersions.length > 0) {
+        core.info(`[Patching] ${existingVersions.length} existing apiVersion document(s)`);
+        const transaction = client.transaction();
+        for (const doc of existingVersions) {
+            core.info(`  - ${doc._id}`);
+            transaction.patch(doc._id, { set: { attachment } });
+        }
+        res = await transaction.commit();
     }
     else {
         core.info(`[Creating] New apiVersion document for ${packageName} v${version}`);
