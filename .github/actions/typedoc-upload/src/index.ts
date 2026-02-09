@@ -12,7 +12,7 @@ const client = createClient({
   perspective: 'raw',
 })
 
-async function run() {
+export async function run() {
   const packageName = core.getInput('packageName')
   const version = core.getInput('version')
   const typedocJsonPath = core.getInput('typedocJsonPath')
@@ -77,4 +77,6 @@ async function run() {
   console.log(JSON.stringify(res, null, 2))
 }
 
-run()
+if (!process.env.VITEST) {
+  run()
+}

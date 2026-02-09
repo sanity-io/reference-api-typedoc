@@ -4,7 +4,8 @@
   "private": true,
   "main": "dist/index.js",
   "scripts": {
-    "build": "rimraf dist && tsc && ncc build --source-map"
+    "build": "rimraf dist && tsc && ncc build --source-map",
+    "test": "vitest run"
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
@@ -16,6 +17,7 @@
     "@types/node": "^22.15.3",
     "@vercel/ncc": "^0.38.3",
     "rimraf": "^6.0.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.0.0"
   }
 }
