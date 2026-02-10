@@ -13,7 +13,7 @@
     "build:docs": "tsx src/build.ts && typedoc && cp 404-template.html docs/404.html",
     "format": "prettier --write .",
     "prepare": "husky",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "pnpm -r run test"
   },
   "prettier": "@sanity/prettier-config",
   "devDependencies": {
