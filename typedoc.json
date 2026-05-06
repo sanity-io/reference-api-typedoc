@@ -14,7 +14,7 @@
       "name": "markdown",
       "path": "./docs",
       "options": {
-        "entryFileName": "index.md",
+        "entryFileName": "index.html.md",
         "cleanOutputDir": false,
         "hideBreadcrumbs": true,
         "hidePageHeader": true
