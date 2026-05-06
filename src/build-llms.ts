@@ -5,6 +5,7 @@ const SITE_URL = 'https://reference.sanity.io'
 const INPUT_DIR = 'input-docs'
 const DOCS_DIR = 'docs'
 const LLMS_FILE = 'docs/llms.txt'
+const ROOT_MD_FILE = 'docs/index.html.md'
 const SITEMAP_FILE = 'docs/sitemap.xml'
 const ROBOTS_FILE = 'docs/robots.txt'
 
@@ -123,8 +124,11 @@ for (const pkg of packages) {
 }
 lines.push('')
 
-await fs.writeFile(LLMS_FILE, lines.join('\n'), 'utf-8')
+const llmsBody = lines.join('\n')
+await fs.writeFile(LLMS_FILE, llmsBody, 'utf-8')
 console.log(`Wrote ${LLMS_FILE} with ${packages.length} packages`)
+await fs.writeFile(ROOT_MD_FILE, llmsBody, 'utf-8')
+console.log(`Wrote ${ROOT_MD_FILE} (mirrors llms.txt)`)
 
 async function collectIndexHtmlPaths(dir: string): Promise<string[]> {
   const entries = await fs.readdir(dir, {withFileTypes: true, recursive: true})
