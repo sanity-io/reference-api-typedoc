@@ -5,6 +5,7 @@ const SITE_URL = 'https://reference.sanity.io'
 const INPUT_DIR = 'input-docs'
 const DOCS_DIR = 'docs'
 const LLMS_FILE = 'docs/llms.txt'
+const LLMS_FULL_FILE = 'docs/llms-full.txt'
 const SITEMAP_FILE = 'docs/sitemap.xml'
 const ROBOTS_FILE = 'docs/robots.txt'
 
@@ -122,6 +123,12 @@ for (const pkg of packages) {
   )
 }
 lines.push('')
+lines.push('## Optional')
+lines.push('')
+lines.push(
+  `- [Full reference](${SITE_URL}/llms-full.txt): every public symbol's signature and description, concatenated for one-shot ingestion.`,
+)
+lines.push('')
 
 await fs.writeFile(LLMS_FILE, lines.join('\n'), 'utf-8')
 console.log(`Wrote ${LLMS_FILE} with ${packages.length} packages`)
@@ -157,3 +164,42 @@ console.log(`Wrote ${SITEMAP_FILE} with ${urls.length} URLs`)
 const robots = ['User-agent: *', 'Allow: /', '', `Sitemap: ${SITE_URL}/sitemap.xml`, ''].join('\n')
 await fs.writeFile(ROBOTS_FILE, robots, 'utf-8')
 console.log(`Wrote ${ROBOTS_FILE}`)
+
+async function collectIndexMdPaths(dir: string): Promise<string[]> {
+  const entries = await fs.readdir(dir, {withFileTypes: true, recursive: true})
+  return entries
+    .filter((e) => e.isFile() && e.name === 'index.md')
+    .map((e) => path.join(e.parentPath ?? dir, e.name))
+}
+
+function mdPathToUrl(filePath: string): string {
+  const rel = path.relative(DOCS_DIR, filePath)
+  const dir = path.dirname(rel).split(path.sep).join('/')
+  const slug = dir === '.' ? '' : `${dir}/`
+  return `${SITE_URL}/${slug}`
+}
+
+const mdFiles = (await collectIndexMdPaths(DOCS_DIR)).sort()
+
+const fullLines: string[] = []
+fullLines.push('# Sanity API Reference (full)')
+fullLines.push('')
+fullLines.push(
+  `> Concatenation of every page on ${SITE_URL}/, in markdown form. For the package index, see ${SITE_URL}/llms.txt.`,
+)
+fullLines.push('')
+
+for (const file of mdFiles) {
+  const url = mdPathToUrl(file)
+  const body = (await fs.readFile(file, 'utf-8')).trim()
+  if (!body) continue
+  fullLines.push('---')
+  fullLines.push('')
+  fullLines.push(`Source: ${url}`)
+  fullLines.push('')
+  fullLines.push(body)
+  fullLines.push('')
+}
+
+await fs.writeFile(LLMS_FULL_FILE, fullLines.join('\n'), 'utf-8')
+console.log(`Wrote ${LLMS_FULL_FILE} with ${mdFiles.length} pages`)

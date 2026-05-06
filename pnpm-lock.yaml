@@ -32,6 +32,9 @@ importers:
       typedoc:
         specifier: ^0.28.3
         version: 0.28.3(typescript@5.8.3)
+      typedoc-plugin-markdown:
+        specifier: ^4.11.0
+        version: 4.11.0(typedoc@0.28.3(typescript@5.8.3))
 
   .github/actions/typedoc-upload:
     dependencies:
@@ -1293,6 +1296,12 @@ packages:
     resolution: {integrity: sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==}
     engines: {node: '>=0.6.11 <=0.7.0 || >=0.7.3'}
 
+  typedoc-plugin-markdown@4.11.0:
+    resolution: {integrity: sha512-2iunh2ALyfyh204OF7h2u0kuQ84xB3jFZtFyUr01nThJkLvR8oGGSSDlyt2gyO4kXhvUxDcVbO0y43+qX+wFbw==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      typedoc: 0.28.x
+
   typedoc@0.28.3:
     resolution: {integrity: sha512-5svOCTfXvVSh6zbZKSQluZhR8yN2tKpTeHZxlmWpE6N5vc3R8k/jhg9nnD6n5tN9/ObuQTojkONrOxFdUFUG9w==}
     engines: {node: '>= 18', pnpm: '>= 10'}
@@ -2541,6 +2550,10 @@ snapshots:
       safe-buffer: 5.2.1
 
   tunnel@0.0.6: {}
+
+  typedoc-plugin-markdown@4.11.0(typedoc@0.28.3(typescript@5.8.3)):
+    dependencies:
+      typedoc: 0.28.3(typescript@5.8.3)
 
   typedoc@0.28.3(typescript@5.8.3):
     dependencies:
