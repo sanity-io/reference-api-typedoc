@@ -123,10 +123,21 @@ for (const pkg of packages) {
   )
 }
 lines.push('')
+lines.push('## Per-package full reference')
+lines.push('')
+lines.push(
+  '> Same content as `llms-full.txt` below, but split per package so each file fits in a smaller context window. Pull only the package(s) you need.',
+)
+lines.push('')
+for (const pkg of packages) {
+  const fullUrl = `${SITE_URL}/${packageSlug(pkg.name)}/llms-full.txt`
+  lines.push(`- [${pkg.name}](${fullUrl})`)
+}
+lines.push('')
 lines.push('## Optional')
 lines.push('')
 lines.push(
-  `- [Full reference](${SITE_URL}/llms-full.txt): every public symbol's signature and description, concatenated for one-shot ingestion.`,
+  `- [Full reference](${SITE_URL}/llms-full.txt): every public symbol across all packages, concatenated. ~1.2M tokens — only useful for agents with a 1M+ context window. For everything else, use the per-package files above.`,
 )
 lines.push('')
 
@@ -181,25 +192,48 @@ function mdPathToUrl(filePath: string): string {
 
 const mdFiles = (await collectIndexMdPaths(DOCS_DIR)).sort()
 
-const fullLines: string[] = []
-fullLines.push('# Sanity API Reference (full)')
-fullLines.push('')
-fullLines.push(
-  `> Concatenation of every page on ${SITE_URL}/, in markdown form. For the package index, see ${SITE_URL}/llms.txt.`,
-)
-fullLines.push('')
-
-for (const file of mdFiles) {
-  const url = mdPathToUrl(file)
-  const body = (await fs.readFile(file, 'utf-8')).trim()
-  if (!body) continue
-  fullLines.push('---')
-  fullLines.push('')
-  fullLines.push(`Source: ${url}`)
-  fullLines.push('')
-  fullLines.push(body)
-  fullLines.push('')
+async function buildSections(files: string[]): Promise<string[]> {
+  const out: string[] = []
+  for (const file of files) {
+    const url = mdPathToUrl(file)
+    const body = (await fs.readFile(file, 'utf-8')).trim()
+    if (!body) continue
+    out.push('---', '', `Source: ${url}`, '', body, '')
+  }
+  return out
 }
 
+const fullLines: string[] = [
+  '# Sanity API Reference (full)',
+  '',
+  `> Concatenation of every page on ${SITE_URL}/, in markdown form. For the package index, see ${SITE_URL}/llms.txt.`,
+  '',
+  ...(await buildSections(mdFiles)),
+]
 await fs.writeFile(LLMS_FULL_FILE, fullLines.join('\n'), 'utf-8')
 console.log(`Wrote ${LLMS_FULL_FILE} with ${mdFiles.length} pages`)
+
+const filesByPackage = new Map<string, string[]>()
+for (const file of mdFiles) {
+  const rel = path.relative(DOCS_DIR, file).split(path.sep).join('/')
+  for (const pkg of packages) {
+    const slug = packageSlug(pkg.name)
+    if (rel === `${slug}/index.md` || rel.startsWith(`${slug}/`)) {
+      if (!filesByPackage.has(slug)) filesByPackage.set(slug, [])
+      filesByPackage.get(slug)!.push(file)
+      break
+    }
+  }
+}
+
+for (const pkg of packages) {
+  const slug = packageSlug(pkg.name)
+  const pkgFiles = filesByPackage.get(slug) ?? []
+  if (pkgFiles.length === 0) continue
+  const pkgLines: string[] = [`# ${pkg.name}`, '']
+  if (pkg.description) pkgLines.push(`> ${pkg.description}`, '')
+  pkgLines.push(...(await buildSections(pkgFiles)))
+  const outPath = path.join(DOCS_DIR, slug, 'llms-full.txt')
+  await fs.writeFile(outPath, pkgLines.join('\n'), 'utf-8')
+  console.log(`Wrote ${outPath} with ${pkgFiles.length} pages`)
+}
