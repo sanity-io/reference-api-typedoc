@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.0",
+    "@actions/github": "^6.0.1",
     "@sanity/client": "^7.0.0",
     "groq": "^3.87.0"
   },
