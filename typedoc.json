@@ -31,19 +31,20 @@
   },
   "categorizeByGroup": false,
   "highlightLanguages": [
-    "diff",
     "bash",
     "console",
     "css",
+    "diff",
     "html",
     "http",
     "javascript",
     "json",
     "jsonc",
     "json5",
+    "markdown",
     "tsx",
     "typescript",
-    "markdown"
+    "yaml"
   ],
   "ignoredHighlightLanguages": ["groq"]
 }
