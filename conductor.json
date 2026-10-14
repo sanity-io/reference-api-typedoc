@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "setup": "claude-dev-setup --realms=sanity,github,vercel"
+  },
+  "filesToCopy": [".env"]
+}

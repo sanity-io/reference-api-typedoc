@@ -1,8 +1,10 @@
 node_modules
 docs/
 .env
+.env.local
 input-docs/
 .DS_Store
 dist/
 .vercel
 .idea
+.claude/auth/
